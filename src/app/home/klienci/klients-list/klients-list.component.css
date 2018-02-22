@@ -1,0 +1,116 @@
+/*table {
+  width: 100%;
+}
+
+table thead,
+table tbody {
+  display: table;
+  width: 100% !important;
+}
+
+table.loading tbody {
+  position: relative;
+}
+
+table.loading tbody:after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  background-image: url('../../../../assets/gears.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 50px 50px;
+  content: "";
+}
+*/
+
+th{
+  font-family: Roboto,sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #000;
+  color: #A5B1BE;
+}
+
+td{
+  font-family: Roboto,sans-serif;
+  font-size: 15px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+ /* background-color: #2d333a; */
+  color: #fff;
+ /* border-top: 1px solid #9e9e9e !important;
+  border-bottom: 1px solid #9e9e9e;*/
+}
+
+tbody > tr > td{
+  border-top: 1px solid #1D2733 !important;
+  border-bottom: 1px solid #1D2733;
+}
+
+tr:nth-of-type(odd), tr:nth-of-type(odd).nolink:hover {
+  background-color: #515c65;
+}
+
+tr:nth-of-type(odd):hover {
+  background-color: #47525B;
+}
+
+tr:nth-of-type(even), tr:nth-of-type(even).nolink:hover {
+  background-color: #3f4852;
+}
+
+tr:nth-of-type(even):hover {
+  background-color: #353E48;
+}
+
+/*.table-hover tbody tr:hover {
+  background-color: #a1a6a9;
+}
+*/
+.active > td{
+  background-color: #1f252b !important;
+  color: #faffbd !important;
+}
+
+.input-field input[type=text] {
+  font-family: Roboto,sans-serif;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #57bff7;
+  border-radius: 0;
+  outline: none;
+  height: 1.5rem;
+  width: 100%;
+  font-size: 1rem;
+  margin: 0 0 5px 0;
+  padding: 10px 10px 10px 10px;
+  box-shadow: none;
+  box-sizing: content-box;
+  transition: all 0.3s;
+  display: table-row-group;
+  color: #faffbd;
+}
+
+.input-field input[type=text]:focus {border-bottom:1px solid #faffbd;box-shadow:0 1px 0 0 #faffbd;}
+.input-field input[type=text]:hover {border-bottom:1px solid #faffbd;box-shadow:0 1px 0 0 #faffbd;}
+
+
+.no-data-available {
+  text-align: center;
+}
+
+.red.green{
+  color: white;
+  background-color: red;
+}
+
+.green{
+  color: white;
+  background-color: green;
+}
+
+

@@ -1,0 +1,394 @@
+<app-nav-module></app-nav-module>
+<div class='wrapper'>
+
+  <div class="content"   [ngClass]="{'isOpen': toggle}">
+
+    <div class="row"  style="background-color: #373f46; margin-left: 0px; margin-right: 0px;">
+      <div class="col-sm-1" [ngClass]="{'nav-is-visible': toggle}">
+        <a class="cd-3d-nav-trigger" (click)="clickEvent()" style="cursor: pointer;">
+          Menu
+          <span></span>
+        </a>
+      </div>
+      <div class="col-sm-1 offset-sm-10" style="padding-top: 10px;">
+        <button style="color: white; font-weight: bold;" class="btn btn-warning btn-sm" [routerLink]="['/login']">Wyloguj</button>
+      </div>
+    </div>
+    <div class="container" style="background-color: #384B5C; border-radius: 4px 4px 4px 4px; margin-top: 15px;">
+      <form [formGroup]="klientForm">
+        <div class="row inp justify-content-center" style="margin-left: 15px; margin-right: 15px; padding-top: 8px;">
+          <div class="btn-group btn-group-toggle" ngbRadioGroup formControlName="typ_prawny" (change)="ustaw($event)">
+            <label ngbButtonLabel class="btn-primary">
+              <input  ngbButton type="radio" [value]=1> Klient indywidualny
+            </label>
+            <label ngbButtonLabel class="btn-primary">
+              <input ngbButton type="radio" value=2> Firma
+            </label>
+            <label ngbButtonLabel class="btn-primary">
+              <input ngbButton type="radio" [value]=3> Klient indyw. prow. dział. gosp.
+            </label>
+          </div>
+        </div>
+
+        <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 8px;">
+          <div class="card-header small-ch">
+            Klient
+          </div>
+          <div *ngIf="klient_typ > 1" class="row inp">
+            <div class="input-field col-sm-12" [ngClass] = "{'error': !klientForm.get('n_firmy').valid && klientForm.get('n_firmy').dirty, 'ok': klientForm.get('n_firmy').valid}">
+              <input formControlName="n_firmy" id="n_firmy" type="text" placeholder="Nazwa firmy">
+              <label for="n_firmy">Nazwa firmy&nbsp;<sup>*</sup></label>
+            </div>
+          </div>
+
+          <div *ngIf="klient_typ != 2" class="row inp">
+            <div class="input-field col-sm-4" [ngClass] = "{'error': !klientForm.get('pesel').valid && klientForm.get('pesel').dirty, 'ok': klientForm.get('pesel').valid}">
+              <input formControlName="pesel" id="pesel" type="text" placeholder="PESEL" [textMask]="{mask: peselmask}">
+              <label for="pesel">Pesel&nbsp;<sup>*</sup></label>
+            </div>
+            <div class="input-field col-sm-4" [ngClass] = "{'error': !klientForm.get('nazwisko').valid && klientForm.get('nazwisko').dirty, 'ok': klientForm.get('nazwisko').valid}">
+              <input formControlName="nazwisko" id="nazwisko" type="text" placeholder="Nazwisko">
+              <label for="nazwisko" class="req">Nazwisko&nbsp;<sup>*</sup></label>
+            </div>
+            <div class="input-field col-sm-4" [ngClass] = "{'error': !klientForm.get('imie').valid && klientForm.get('imie').dirty, 'ok': klientForm.get('imie').valid}">
+              <input formControlName="imie" id="imie" type="text" placeholder="Imie">
+              <label for="imie">Imie&nbsp;<sup>*</sup></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 8px;">
+          <div class="card-header small-ch">
+            Adres
+          </div>
+          <div class="row inp">
+            <div class="input-field col-sm-2" [ngClass] = "{'error': !klientForm.get('kod').valid && klientForm.get('kod').dirty, 'ok': klientForm.get('kod').valid}">
+              <input formControlName="kod" type="text" id="kod" placeholder="Kod" [textMask]="{mask: kodmask}">
+              <label for="kod">Kod&nbsp;<sup>*</sup></label>
+            </div>
+            <div class="input-field col-sm-5" [ngClass] = "{'error': !klientForm.get('miejscowosc').valid && klientForm.get('miejscowosc').dirty, 'ok': klientForm.get('miejscowosc').valid}">
+              <input formControlName="miejscowosc" type="text" id="miejscowosc" placeholder="Miejscowość">
+              <label for="miejscowosc">Miejscowość&nbsp;<sup>*</sup></label>
+            </div>
+            <div class="input-field col-sm-5" [ngClass] = "{'error': !klientForm.get('ulica').valid && klientForm.get('ulica').dirty, 'ok': klientForm.get('ulica').valid}">
+              <input formControlName="ulica" type="text" id="ulica" placeholder="Adres">
+              <label for="ulica">Adres&nbsp;<sup>*</sup></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 8px;">
+          <div class="card-header small-ch">
+            Adres do korespondencji
+          </div>
+          <div class="row inp">
+            <div class="input-field col-sm-2">
+              <input formControlName="kod_k" id="kod_k" type="text" id="kod_k" placeholder="Kod" [textMask]="{mask: kodmask}">
+              <label for="kod_k">Kod</label>
+            </div>
+            <div class="input-field col-sm-5">
+              <input formControlName="miejscowosc_k" id="miejscowosc_k" type="text" placeholder="Miejscowość">
+              <label for="miejscowosc_k">Miejscowość</label>
+            </div>
+            <div class="input-field col-sm-5">
+              <input formControlName="ulica_k" type="text" id="ulica_k" placeholder="Adres">
+              <label for="ulica_k">Adres</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
+          <div class="card-header small-ch">
+            Kontakt
+          </div>
+
+          <div class="row inp">
+            <div class="input-field col-sm-3">
+              <input formControlName="tel" type="text" id="tel" placeholder="Telefon">
+              <label for="tel">Tel</label>
+            </div>
+            <div class="input-field col-sm-3">
+              <input formControlName="tel_kom" type="text" id="tel_kom" placeholder="Telefon kom.">
+              <label for="tel_kom">Tel. kom.</label>
+            </div>
+
+            <div class="input-field col-sm-6">
+              <input formControlName="email" type="text" id="email" placeholder="Email">
+              <label for="email">email</label>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
+          <div class="card-header small-ch">
+            Prawo jazdy
+          </div>
+          <div class="row inp justify-content-center">
+            <div class="col-sm-6">
+
+              <div class="parent" style="display: table">
+                <div class="input-group" #data_wydContainer (mouseover)="labelDwHower()">
+                  <input [(ngModel)]="data_w" formControlName="data_wyd" id="dw" type="text" class="form-control inp_n"  placeholder="rrrr-mm-dd" data-mask="9999-99-99"
+                         ngbDatepicker #dw="ngbDatepicker" (focus)="focusData()" (keyup)="setData_wyd($event)" (click)="dw.close()" (blur)="focusOutData($event)">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" style="padding-top: 3px; padding-bottom: 3px;" (click)="dw.toggle()" type="button">
+                      <i class="fa fa-calendar" aria-hidden="true" style="cursor: pointer;"></i>
+                    </button>
+                  </div>
+                </div>
+                <label for="dw" class="dw" id="label_dw" [style.color]="lData" style="display: table-header-group">Data wyd.</label>
+              </div>
+            </div>
+            <div class="input-field col-sm-3">
+              <select formControlName="Kat" id="Kat" style="height: 32px;">
+                <option class="options" style="font-weight: bold;" *ngFor="let typ_prawojazdy of typ_prawojazdys" [value]="typ_prawojazdy">{{typ_prawojazdy}}</option>
+              </select>
+              <label for="Kat">Kategoria</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
+          <div class="card-header small-ch">
+            Dane podatkowe
+          </div>
+          <div class="row inp justify-content-center">
+            <div class="input-field col-sm-3">
+              <input formControlName="nip" type="text" id="nip" placeholder="NIP" [textMask]="{mask: nipmask}">
+              <label for="nip">Nip</label>
+            </div>
+            <div *ngIf="klient_typ > 1" class="input-field col-sm-3">
+              <input formControlName="regon" type="text" id="regon" placeholder="Regon">
+              <label for="regon">Rregon</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 10px; margin-bottom: 10px;">
+          <div class="card-header small-ch">
+            Uwagi
+          </div>
+          <div class="row" style="margin-left: 10px; margin-right: 10px; margin-top: 5px; margin-bottom: 5px;">
+            <div class="input-field col-sm-12">
+              <textarea formControlName="uwagi" rows="4"></textarea>
+            </div>
+          </div>
+
+
+        </div>
+        <hr style="padding-bottom: 10px; margin-bottom: 0px;">
+        <div style="padding-bottom: 10px; padding-right: 10px;" class="col-sm-2 offset-sm-10">
+          <!--button [disabled] = "klientForm.invalid" id="zapiszK" (click) = "createKlient()" style="font-weight: bold; color: white;" type="button" class="btn edit">
+            <i style="margin-right: 10px; color:green; font-size: 18px;" class="fa fa-check"></i>Dodaj klienta
+          </button-->
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!--div class='wrapper'>
+  <app-nav-module></app-nav-module>
+  <div class='content'   [ngClass]="{'isOpen': toggle}">
+
+
+    <div class="container">
+  <div class="card" style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+    <div class="card-header" style="padding-bottom: 5px; padding-top: 5px;">
+      <a class='button' style="color: white" (click)="clickEvent($event)"><span class="fa" [ngClass]="{'fa-bars': !toggle, 'fa-times': toggle}"></span></a>
+      <strong>
+      {{klient.n_firmy}} {{klient.nazwisko}} {{klient.imie}}
+    </strong>
+      <button class="close float-right" style="color: #e6e6e6;padding-bottom: 5px; padding-left: 5px; padding-right: 5px;" [routerLink]="['/klients']" [routerLinkActive]="'active'"><span>&times;</span></button>
+    </div>
+    <form [formGroup]="klientForm">
+      <div class="row inp justify-content-center" style="margin-left: 15px; margin-right: 15px; margin-top: 8px;">
+        <div class="btn-group btn-group-toggle" ngbRadioGroup id="typ_prawny" formControlName="typ_prawny" (change)="ustaw($event)">
+          <label ngbButtonLabel class="btn-primary">
+            <input  ngbButton type="radio" [value]=1> Klient indywidualny
+          </label>
+          <label ngbButtonLabel class="btn-primary">
+            <input ngbButton type="radio" [value]=2> Firma
+          </label>
+          <label ngbButtonLabel class="btn-primary">
+            <input ngbButton type="radio" [value]=3> Klient indyw. prow. dział. gosp.
+          </label>
+        </div>
+      </div>
+
+      <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 8px;">
+        <div class="card-header small-ch">
+          Klient
+        </div>
+        <div *ngIf="klient_typ > 1" class="row inp">
+          <div class="input-field col-sm-12">
+            <input formControlName="n_firmy" id="n_firmy" type="text" placeholder="Nazwa firmy" [ngClass] = "{'error': !klientForm.get('n_firmy').valid && klientForm.get('n_firmy').dirty, 'ok': klientForm.get('n_firmy').valid}">
+            <label for="n_firmy" [ngClass] = "{'error': !klientForm.get('n_firmy').valid && klientForm.get('n_firmy').dirty, 'ok': klientForm.get('n_firmy').valid}">Nazwa firmy&nbsp;<sup>*</sup></label>
+          </div>
+        </div>
+
+        <div *ngIf="klient_typ != 2" class="row inp">
+          <div class="input-field col-sm-4">
+            <input formControlName="pesel" id="pesel" type="text" placeholder="PESEL" [textMask]="{mask: peselmask}" (blur)="sprawdz('p')" [ngClass] = "{'error': !klientForm.get('nazwisko').valid && klientForm.get('nazwisko').dirty, 'ok': klientForm.get('nazwisko').valid}">
+            <label for="pesel">Pesel&nbsp;<sup>*</sup></label>
+          </div>
+          <div class="input-field col-sm-4">
+            <input formControlName="nazwisko" id="nazwisko" type="text" placeholder="Nazwisko" [ngClass] = "{'error': !klientForm.get('nazwisko').valid && klientForm.get('nazwisko').dirty, 'ok': klientForm.get('nazwisko').valid}">
+            <label for="nazwisko" class="req" [ngClass] = "{'error': !klientForm.get('nazwisko').valid && klientForm.get('nazwisko').dirty, 'ok': klientForm.get('nazwisko').valid}">Nazwisko&nbsp;<sup>*</sup></label>
+          </div>
+          <div class="input-field col-sm-4">
+            <input formControlName="imie" id="imie" type="text" placeholder="Imie" [ngClass] = "{'error': !klientForm.get('imie').valid && klientForm.get('imie').dirty, 'ok': klientForm.get('imie').valid}">
+            <label for="imie" [ngClass] = "{'error': !klientForm.get('imie').valid && klientForm.get('imie').dirty, 'ok': klientForm.get('imie').valid}">Imie&nbsp;<sup>*</sup></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 8px;">
+        <div class="card-header small-ch">
+          Adres
+        </div>
+        <div class="row inp">
+          <div class="input-field col-sm-2">
+            <input formControlName="kod" type="text" id="kod" placeholder="Kod" [textMask]="{mask: kodmask}" [ngClass] = "{'error': !klientForm.get('kod').valid && klientForm.get('kod').dirty, 'ok': klientForm.get('kod').valid}">
+            <label for="kod" [ngClass] = "{'error': !klientForm.get('kod').valid && klientForm.get('kod').dirty, 'ok': klientForm.get('kod').valid}">Kod&nbsp;<sup>*</sup></label>
+          </div>
+          <div class="input-field col-sm-5">
+            <input formControlName="miejscowosc" type="text" id="miejscowosc" placeholder="Miejscowość" [ngClass] = "{'error': !klientForm.get('miejscowosc').valid && klientForm.get('miejscowosc').dirty, 'ok': klientForm.get('miejscowosc').valid}">
+            <label for="miejscowosc" [ngClass] = "{'error': !klientForm.get('miejscowosc').valid && klientForm.get('miejscowosc').dirty, 'ok': klientForm.get('miejscowosc').valid}">Miejscowość&nbsp;<sup>*</sup></label>
+          </div>
+          <div class="input-field col-sm-5">
+            <input formControlName="ulica" type="text" id="ulica" placeholder="Adres" [ngClass] = "{'error': !klientForm.get('ulica').valid && klientForm.get('ulica').dirty, 'ok': klientForm.get('ulica').valid}">
+            <label for="ulica" [ngClass] = "{'error': !klientForm.get('ulica').valid && klientForm.get('ulica').dirty, 'ok': klientForm.get('ulica').valid}">Adres&nbsp;<sup>*</sup></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 8px;">
+        <div class="card-header small-ch">
+          Adres do korespondencji
+        </div>
+        <div class="row inp">
+          <div class="input-field col-sm-2">
+            <input formControlName="kod_k" id="kod_k" type="text" id="kod_k" placeholder="Kod" [textMask]="{mask: kodmask}">
+            <label for="kod_k">Kod</label>
+          </div>
+          <div class="input-field col-sm-5">
+            <input formControlName="miejscowosc_k" id="miejscowosc_k" type="text" placeholder="Miejscowość">
+            <label for="miejscowosc_k">Miejscowość</label>
+          </div>
+          <div class="input-field col-sm-5">
+            <input formControlName="ulica_k" type="text" id="ulica_k" placeholder="Adres">
+            <label for="ulica_k">Adres</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
+        <div class="card-header small-ch">
+          Kontakt
+        </div>
+
+        <div class="row inp">
+          <div class="input-field col-sm-3">
+            <input formControlName="tel" type="text" id="tel" placeholder="Telefon">
+            <label for="tel">Tel</label>
+          </div>
+          <div class="input-field col-sm-3">
+            <input formControlName="tel_kom" type="text" id="tel_kom" placeholder="Telefon kom.">
+            <label for="tel_kom">Tel. kom.</label>
+          </div>
+
+          <div class="input-field col-sm-6">
+            <input formControlName="email" type="text" id="email" placeholder="Email">
+            <label for="email">email</label>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
+        <div class="card-header small-ch">
+          Prawo jazdy
+        </div>
+        <div class="row inp justify-content-center">
+          <div class="col-sm-6">
+
+            <div class="parent" style="display: table">
+              <div class="input-group" #data_wydContainer>
+                <input [(ngModel)]="data_w" formControlName="data_wyd" id="dw" type="text" class="form-control inp_n"  placeholder="rrrr-mm-dd" data-mask="9999-99-99"
+                       ngbDatepicker #dw="ngbDatepicker" (focus)="focusData()" (keyup)="setData_wyd($event)" (click)="dw.close()" (blur)="focusOutData()">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" style="padding-top: 3px; padding-bottom: 3px;" (click)="dw.toggle()" type="button">
+                    <i class="fa fa-calendar" aria-hidden="true" style="cursor: pointer;"></i>
+                  </button>
+                </div>
+              </div>
+              <label for="dw" class="dw" id="label_dw" [style.color]="lData" style="display: table-header-group">Data wyd.</label>
+            </div>
+          </div>
+          <div class="input-field col-sm-3">
+            <select formControlName="Kat" id="Kat" style="height: 32px;">
+              <option style="font-weight: bold;" *ngFor="let typ_prawojazdy of typ_prawojazdys" [value]="typ_prawojazdy">{{typ_prawojazdy}}</option>
+            </select>
+            <label for="Kod">Kategoria</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
+        <div class="card-header small-ch">
+          Dane podatkowe
+        </div>
+        <div class="row inp justify-content-center">
+          <div class="input-field col-sm-3">
+            <input formControlName="nip" type="text" id="nip" placeholder="NIP" [textMask]="{mask: nipmask}">
+            <label for="nip">Nip</label>
+          </div>
+          <div *ngIf="klient_typ > 1" class="input-field col-sm-3">
+            <input formControlName="regon" type="text" id="regon" placeholder="Regon">
+            <label for="regon">Rregon</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 10px; margin-bottom: 10px;">
+        <div class="card-header small-ch">
+          Uwagi
+        </div>
+        <div class="row" style="margin-left: 10px; margin-right: 10px; margin-top: 5px; margin-bottom: 5px;">
+          <div class="input-field col-sm-12">
+            <textarea formControlName="uwagi" rows="4"></textarea>
+          </div>
+        </div>
+      </div>
+      <hr style="padding-bottom: 10px; margin-bottom: 0px;">
+      <div style="padding-bottom: 10px; padding-right: 10px;" class="float-right">
+        <button [disabled] = "klientForm.invalid" (click)="updateKlient()" type="button" class="btn btn-labeled btn-success btn-sm"><span class="btn-label"><i class="fa fa-check"></i></span>Zapisz</button>
+        <button [disabled] = "klientForm.invalid" (click)="open(content)" type="button" class="btn btn-labeled btn-danger btn-sm"><span class="btn-label"><i class="fa fa-times"></i></span>Usuń</button>
+      </div>
+    </form>
+  </div>
+</div>
+  </div>
+</div-->
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header" style="background-color: red; color: white;">
+    <h4 class="modal-title">Uwaga !!!</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true" style="color: #fff !important; opacity: 1 !important;">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Czy na pewno chcesz usunąć klienta<strong> {{klient.n_firmy}} {{klient.nazwisko}} {{klient.imie}}</strong> ?</p>
+  </div>
+  <div class="modal-footer">
+    <button (click)="c('Close click'); deleteKlient();" type="button" class="btn btn-labeled btn-danger btn-sm"><span class="btn-label"><i class="fa fa-times"></i></span>Tak</button>
+    <button (click)="c('Close click')" type="button" class="btn btn-labeled btn-success btn-sm"><span class="btn-label"><i class="fa fa-check"></i></span>Nie</button>
+  </div>
+</ng-template>
+
+<pre style="color: white;">Is myForm valid?: <br>{{klientForm.valid | json}}</pre>
+<pre style="color: white;"> {{klientForm.value | json}}</pre>

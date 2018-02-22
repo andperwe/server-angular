@@ -1,0 +1,130 @@
+<app-nav-module></app-nav-module>
+<div class='wrapper'>
+
+    <div class="content" [ngClass]="{'isOpen': toggle}">
+
+      <div class="row"  style="background-color: #373f46; margin-left: 0px; margin-right: 0px;">
+        <div class="col-sm-1" [ngClass]="{'nav-is-visible': toggle}">
+        <a class="cd-3d-nav-trigger" (click)="clickEvent()" style="cursor: pointer;">
+          Menu
+          <span></span>
+        </a>
+        </div>
+        <div class="col-sm-1 offset-sm-10" style="padding-top: 10px;">
+          <button style="color: white; font-weight: bold;" class="btn btn-warning btn-sm" [routerLink]="['/login']">Wyloguj</button>
+        </div>
+  </div>
+
+      <div class="container" style="background-color: #384B5C; border-radius: 4px 4px 4px 4px; margin-top: 15px;">
+        <div style="margin-top: 10px;">
+       <flash-messages></flash-messages>
+    </div>
+        <div class="row" style="padding-bottom: 10px;">
+    <div class="col-6 input-field">
+      <input [(ngModel)]="filter" (input) ="zmiana()" type="text" placeholder="Szukaj klienta..." style="font-weight: bold; font-size: 20px;" >
+    </div>
+  </div>
+        <div class="row" style="padding-left: 5px; padding-right: 5px;">
+          <div class="table-responsive">
+            <table class="table table-hover" style="border-bottom: 1px solid #dee2e6;">
+      <thead>
+      <tr>
+        <th style="display: none">_id</th>
+        <th (click)="sort('klient')" style="cursor: pointer;">Klient
+          <span class="fa float-right" *ngIf="key =='klient'" [ngClass]="{'fa-sort-amount-asc': reverse, 'fa-sort-amount-desc': !reverse}"></span>
+        </th>
+        <th (click)="sort('miejscowosc')" style="cursor: pointer;">Miejscowość
+          <span class="fa float-right" *ngIf="key =='miejscowosc'" [ngClass]="{'fa-sort-amount-asc': reverse, 'fa-sort-amount-desc': !reverse}" ></span>
+        </th>
+        <th>Adres</th>
+        <th>Telefon</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let klient of Klients | paginate: { itemsPerPage: 5, currentPage: p, totalItems: tItems };" [class.active]="klient._id === id" (click)="trClick(klient._id)">
+          <!--(click)="clicked = (clicked === klient ? null :klient)"-->
+        <td style="display: none">{{klient._id}}</td>
+        <td>{{klient.klient | uppercase}}</td>
+        <td>{{klient.miejscowosc}}</td>
+        <td>{{klient.ulica}}</td>
+        <td>{{klient.tel}}</td>
+        <td style="padding-top: 3px; padding-left: 0px; padding-right: 0px; padding-bottom: 2px;">
+          <!--button  class="btn btn-outline-primary" [routerLink]="['/klient/', klient._id]" (click)="setActive(klient._id)" style="width: 40px; padding-top: 5px; padding-bottom: 5px;"><i style="padding-bottom: 0px;" class="fa fa-info"></i></button-->
+          <button [routerLink]="['/klient/', klient._id]" style="padding-top: 5px; padding-bottom: 5px; font-weight: bold; color: #fff;" class="btn edit" (click)="setActive(klient._id)">
+            <i style="color:blue; font-size: 18px; margin-right: 10px;" class="fa fa-check"></i>Edytuj
+          </button>
+        </td>
+
+      </tr>
+
+      <!--tr *ngIf="Klients?.length % 5 != 0 && 5 - (Klients?.length % 5) > 8">
+        <td colspan="6">&nbsp;</td>
+      </tr>
+
+      <tr *ngIf="Klients?.length % 5 != 0 && 5 - (Klients?.length % 5) > 7">
+        <td colspan="6">&nbsp;</td>
+      </tr>
+
+      <tr *ngIf="Klients?.length % 5 != 0 && 5 - Klients?.length % 5 > 6">
+        <td colspan="6">&nbsp;</td>
+      </tr>
+
+      <tr *ngIf="Klients?.length % 5 != 0 && 5 - Klients?.length % 5 > 5">
+        <td colspan="6">&nbsp;</td>
+      </tr-->
+
+      <tr *ngIf="Klients?.length % 5 != 0 && 5 - Klients?.length % 5 > 4">
+        <td colspan="6">&nbsp;</td>
+      </tr>
+
+      <tr *ngIf="Klients?.length % 5 != 0 && 5 - Klients?.length % 5 > 3">
+        <td colspan="6">&nbsp;</td>
+      </tr>
+
+      <tr *ngIf="Klients?.length % 5 != 0 && 5 - Klients?.length % 5 > 2">
+        <td colspan="6">&nbsp;</td>
+      </tr>
+
+      <tr *ngIf="Klients?.length % 5 != 0 && 5 - Klients?.length % 5 > 1">
+        <td colspan="6">&nbsp;</td>
+      </tr>
+
+      <tr *ngIf="Klients?.length % 5 != 0 && 5 - Klients?.length % 5 > 0">
+        <td colspan="6">&nbsp;</td>
+      </tr>
+
+      <tr *ngIf="tItems == 0">
+        <td colspan="6" class="no-data-available table-warning"><strong>Brak danych!</strong></td>
+      </tr>
+
+      </tbody>
+    </table>
+          </div>
+        </div>
+    <div class="row justify-content-center">
+    <pagination-controls class="my-pagination" style="font-weight: bold;"
+                         (pageChange)="pageChanged($event);"
+                         maxSize="5"
+                         previousLabel=""
+                         nextLabel="">
+    </pagination-controls>
+  </div>
+</div>
+</div>
+</div>
+
+<ng-template id="content2" #content2 let-c="close" let-d="dismiss">
+  <div id="modalh" #modalh class="modal-header green">
+    <h6 class="modal-title">Uwaga !!!</h6>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true" style="color: #fff !important; opacity: 1 !important;">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>{{uwaga}}</p>
+  </div>
+  <div class="modal-footer">
+    <button (click)="c('Close click')" type="button" class="btn btn-labeled btn-success btn-sm"><span class="btn-label"><i class="fa fa-check"></i></span>Ok</button>
+  </div>
+</ng-template>
