@@ -7,12 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./nav-module.component.css']
 })
 export class NavModuleComponent implements OnInit {
-
-  constructor() { }
-
+  public user = localStorage.getItem('role');
+  constructor() {}
+  public menus:string [];
   ngOnInit() {
+
   }
-
-
 
 }

@@ -12,6 +12,8 @@ import { LoginComponent } from './login/index';
 import {RegisterComponent} from "./register/register.component"
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {KlientsModule} from "./home/klienci/klients.module";
+import {NavModule} from "./home/nav-module/nav.module";
+import {UsersModule} from "./home/users/users.module";
 
 
 
@@ -22,7 +24,9 @@ import {KlientsModule} from "./home/klienci/klients.module";
         HttpClientModule,
         routing,
       NgbModule.forRoot(),
-      KlientsModule
+      KlientsModule,
+      UsersModule,
+      NavModule
     ],
     declarations: [
         AppComponent,

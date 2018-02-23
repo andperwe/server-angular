@@ -1,0 +1,91 @@
+<app-nav-module></app-nav-module>
+<div class='wrapper'>
+
+  <div class="content"   [ngClass]="{'isOpen': toggle}">
+
+    <div class="row"  style="background-color: #373f46; margin-left: 0px; margin-right: 0px;">
+      <div class="col-sm-1" [ngClass]="{'nav-is-visible': toggle}">
+        <a class="cd-3d-nav-trigger" (click)="clickEvent()" style="cursor: pointer;">
+          Menu
+          <span></span>
+        </a>
+      </div>
+      <div class="col-sm-1 offset-sm-10" style="padding-top: 10px;">
+        <button style="color: white; font-weight: bold;" class="btn btn-warning btn-sm" [routerLink]="['/login']">Wyloguj</button>
+      </div>
+    </div>
+    <div class="container" style="background-color: #384B5C; border-radius: 4px 4px 4px 4px; margin-top: 15px; padding-top: 10px;">
+      <form [formGroup]="userForm">
+
+        <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 8px;">
+          <div class="card-header small-ch">
+            Użytkownik
+          </div>
+          <div class="row inp">
+            <div class="input-field col-sm-4" [ngClass] = "{'error': !userForm.get('username').valid && userForm.get('username').dirty, 'ok': userForm.get('username').valid}">
+              <input formControlName="username" type="text" id="username" placeholder="Username">
+              <label for="username">Nazwa użytkownika&nbsp;<sup>*</sup></label>
+            </div>
+            <div class="input-field col-sm-4" [ngClass] = "{'error': !userForm.get('firstName').valid && userForm.get('firstName').dirty, 'ok': userForm.get('firstName').valid}">
+              <input formControlName="firstName" type="text" id="firstName" placeholder="Imie">
+              <label for="firstName">Imie&nbsp;<sup>*</sup></label>
+            </div>
+            <div class="input-field col-sm-4" [ngClass] = "{'error': !userForm.get('lastName').valid && userForm.get('lastName').dirty, 'ok': userForm.get('lastName').valid}">
+              <input formControlName="lastName" type="text" id="lastName" placeholder="Nazwisko">
+              <label for="lastName">Nazwisko&nbsp;<sup>*</sup></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 8px;">
+          <div class="card-header small-ch">
+            Rola
+          </div>
+          <div class="row inp justify-content-center">
+            <div class="input-field col-sm-3">
+              <select formControlName="role" id="role" style="height: 32px;">
+                <option class="options" style="font-weight: bold;" value="użytkownik">Użytkownik</option>
+                <option class="options" style="font-weight: bold;" value="administrator">Administrator</option>
+              </select>
+              <label for="role">Rola</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 8px;">
+          <div class="card-header small-ch">
+            email
+          </div>
+          <div class="row inp justify-content-center">
+            <div class="input-field col-sm-3" [ngClass] = "{'error': !userForm.get('email').valid && userForm.get('email').dirty, 'ok': userForm.get('email').valid}">
+              <input formControlName="email" id="email" type="text" id="email" placeholder="email">
+              <label for="email">email <sup>*</sup></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card small-c" style="margin-left: 15px; margin-right: 15px; margin-top: 10px;">
+          <div class="card-header small-ch">
+            Hasło
+          </div>
+
+          <div class="row inp justify-content-center">
+            <div class="input-field col-sm-3" [ngClass] = "{'error': !userForm.get('password').valid && userForm.get('password').dirty, 'ok': userForm.get('password').valid}">
+              <input formControlName="password" type="password" id="password" placeholder="Hasło">
+              <label for="password">Hasło <sup>*</sup></label>
+            </div>
+          </div>
+        </div>
+        <hr style="padding-bottom: 10px; margin-bottom: 0px;">
+        <div style="padding-bottom: 10px; padding-right: 10px;" class="col-sm-2 offset-sm-10">
+          <button [disabled] = "userForm.invalid" id="zapiszU" (click) = "createUser()" style="font-weight: bold; color: white;" type="button" class="btn edit">
+            <i style="margin-right: 10px; color:green; font-size: 18px;" class="fa fa-check"></i>Dodaj użytkownika
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<pre style="color: white;">Is myForm valid?: <br>{{userForm.valid | json}}</pre>
+<pre style="color: white;"> {{userForm.value | json}}</pre>

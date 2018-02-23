@@ -6,13 +6,13 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgxPaginationModule} from "ngx-pagination";
 import {RouterModule} from "@angular/router";
 import {FlashMessagesModule} from "angular2-flash-messages";
-import {NavModuleComponent} from "./nav-module/nav-module.component";
 import {KlientsService} from "./klients.service";
 import {CookieService} from "ngx-cookie-service";
 import {KlientCreateComponent} from "./klient-create/klient-create.component";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {KlientEditComponent} from "./klient-edit/klient-edit.component";
 import {KlientResolve} from "./klient-resolve.service";
+import {NavModule} from "../nav-module/nav.module";
 
 
 @NgModule({
@@ -24,10 +24,11 @@ import {KlientResolve} from "./klient-resolve.service";
     FlashMessagesModule.forRoot(),
     NgbModule.forRoot(),
     TextMaskModule,
-    RouterModule
+    RouterModule,
+    NavModule
   ],
   exports: [KlientsListComponent],
   providers: [KlientsService, CookieService, KlientResolve],
-  declarations: [KlientsListComponent, NavModuleComponent, KlientCreateComponent, KlientEditComponent]
+  declarations: [KlientsListComponent, KlientCreateComponent, KlientEditComponent]
 })
 export class KlientsModule { }

@@ -50,7 +50,7 @@ next();
 })*/
 
 app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:4200");
+    res.header("Access-Control-Allow-Origin", "*");
    res.header("Access-Control-Allow-Headers", " Access-Control-Allow-Headers, Origin, X-Requested-With, Content-Type, Accept, Authorization, x-access-token");
   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS, HEAD');
     next();
@@ -59,7 +59,7 @@ app.use(function (req, res, next) {
 
 
 var UserController = require('./user/UserController');
-app.use('/users', UserController);
+app.use('/api', UserController);
 var AuthController = require('./auth/AuthController');
 app.use('/api/auth', AuthController);
 var KlientController = require('./klient/KlientController');

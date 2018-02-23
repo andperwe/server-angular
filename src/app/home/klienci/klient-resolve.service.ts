@@ -9,7 +9,8 @@ export class KlientResolve implements Resolve<Klient>
 
   constructor(private klientsService: KlientsService) {}
 
+
   resolve(route: ActivatedRouteSnapshot) {
-    return this.klientsService.getKlient(route.params['id']);
+        return this.klientsService.getKlient(route.params['id']);
   }
 }

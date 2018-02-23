@@ -4,13 +4,16 @@
   </div>
   <ul class='navi'>
     <li>
-      <a [routerLink]="['/klienci/list']" [routerLinkActive]="'active'" class="active">Klienci</a>
+      <a [routerLink]="['/klienci/list']" [routerLinkActive]="'active'">Klienci</a>
     </li>
     <li>
       <a [routerLink]="['/klientn']" [routerLinkActive]="'active'">Nowy klient</a>
+    </li>
+    <li *ngIf="user == 'administrator'">
+      <a [routerLink]="['/users/list']" [routerLinkActive]="'active'">Użytkownicy</a>
     </li>
     <li>
       <a [routerLink]="['/login']">Wylogowanie</a>
     </li>
   </ul>
-</div>
+  </div>

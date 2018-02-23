@@ -233,8 +233,7 @@ select:hover + label, .dw:hover + label{
 }
 
 .noradius{
-  border-top-right-radius: 0;
-  border-top-left-radius: 0;
+  border-top-radius: 0 0 4.8px 4.8px;
 }
 
 alert.noradiusa > .alert{
@@ -312,4 +311,11 @@ alert.noradiusa > .alert{
 }
 :-moz-placeholder { /* Firefox 18- */
   color: #A5B1BE;
+}
+
+/* Change the white to any color ;) */
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+  background-color: transparent !important;
+  background-image: none;
+  color: white !important;
 }

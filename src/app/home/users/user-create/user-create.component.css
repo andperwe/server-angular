@@ -1,0 +1,14 @@
+input{
+  padding-top: 5px !important;
+}
+
+#zapiszU:disabled{
+  cursor: not-allowed;
+}
+
+
+
+.row.inp{
+  margin-left: 10px;
+  margin-right: 10px;
+}

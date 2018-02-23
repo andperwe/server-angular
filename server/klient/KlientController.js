@@ -76,10 +76,9 @@ router.post('/klientdt', VerifyToken, function(req, res) {
 
 
 router.get('/klient/:id', VerifyToken, function(req, res, next) {
-//router.get('/klient/:id', function(req, res, next){
  var id = req.params.id;
   Klient.findById(id, function (err, klient) {
-    if (err) return next('Wystąpił błąd podczas  wyszukiwania klienta.');
+    if (err) {res.json({}); next()}  // next(res.redirect('../../klienci/list'));
     res.json(klient);
   });
 });

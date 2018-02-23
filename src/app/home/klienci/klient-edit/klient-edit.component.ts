@@ -8,6 +8,7 @@ import {KlientsService} from "../klients.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Klient} from "../models/klient";
 import {ActivatedRoute, Router} from "@angular/router";
+import {isUndefined} from "util";
 
 
 const I18N_VALUES = {
@@ -246,53 +247,58 @@ export class KlientEditComponent implements OnInit {
 
   updateKlient () {
       this.klientsService.updateKlient(this.klientForm.value, this.klient._id).subscribe(
-        data => {this.cookieService.set('flash_ok', 'Zaktualizowano klienta !'); this.router.navigate(['klients']); },
-        err => {this.cookieService.set('flash_error', 'Wystąpił błąd podczas aktualizacji klienta !'); this.router.navigate(['klients']); }
+        data => {this.cookieService.set('flash_ok', 'Zaktualizowano klienta !'); this.router.navigate(['klienci/list']); },
+        err => {this.cookieService.set('flash_error', 'Wystąpił błąd podczas aktualizacji klienta !'); this.router.navigate(['klienci/list']); }
       );
     }
 
     deleteKlient () {
       this.klientsService.deleteKlient(this.klient._id).subscribe(
-        data => {this.cookieService.set('flash_ok', 'Usunięto klienta !'); this.router.navigate(['klients']); },
-        err => {this.cookieService.set('flash_error', 'Wystąpił błąd podczas usuwania klienta !'); this.router.navigate(['klients']); }
+        data => {this.cookieService.set('flash_ok', 'Usunięto klienta !'); this.router.navigate(['klienci/list']); },
+        err => {this.cookieService.set('flash_error', 'Wystąpił błąd podczas usuwania klienta !'); this.router.navigate(['klienci/list']); }
       );
     }
 
   getKlient () {
-    // this.klient = this.klientsService.ed
     this.klient = this.route.snapshot.data['klient'];
-    this.klientForm.get('typ_prawny').setValue(this.klient['typ_prawny']);
-    this.klient_typ = this.klient['typ_prawny'];
-    this.klientForm.get('n_firmy').setValue(this.klient['n_firmy']);
-    this.klientForm.get('pesel').setValue(this.klient['pesel']);
-    this.klientForm.get('nazwisko').setValue(this.klient['nazwisko']);
-    this.klientForm.get('imie').setValue(this.klient['imie']);
-    this.klientForm.get('kod').setValue(this.klient['kod']);
-    this.klientForm.get('miejscowosc').setValue(this.klient['miejscowosc']);
-    this.klientForm.get('ulica').setValue(this.klient['ulica']);
-    this.klientForm.get('kod_k').setValue(this.klient['kod_k']);
-    this.klientForm.get('miejscowosc_k').setValue(this.klient['miejscowosc_k']);
-    this.klientForm.get('ulica_k').setValue(this.klient['ulica_k']);
-    this.klientForm.get('tel').setValue(this.klient['tel']);
-    this.klientForm.get('tel_kom').setValue(this.klient['tel_kon']);
-    this.klientForm.get('email').setValue(this.klient['email']);
-    if (this.klient['data_wyd']) {
-    const data_wyd_s = new Date(this.klient['data_wyd']).toISOString();
-    // console.log(data_wyd_s);
-    const month = parseInt(data_wyd_s.substring(5, 7), 10);
-    const day = parseInt(data_wyd_s.substring(8, 10), 10);
-    const year = parseInt(data_wyd_s.substring(0, 4), 10);
-    this.data_w = {
-      year: year,
-      month: month,
-      day: day
-    }}
-    // console.log(this.klient['data_wyd']);
-    // this.klientForm.get('data_wyd').setValue(this.klient['data_wyd']);
-    this.klientForm.get('Kat').setValue(this.klient['Kat']);
-    this.klientForm.get('nip').setValue(this.klient['nip']);
-    this.klientForm.get('regon').setValue(this.klient['regon']);
-    this.klientForm.get('uwagi').setValue(this.klient['uwagi']);
+    if (isUndefined(this.klient['typ_prawny'])) {
+        this.cookieService.set('flash_error', 'Brak klienta.');
+        this.router.navigate(['klienci/list']);
+    } else {
+      this.klientForm.get('typ_prawny').setValue(this.klient['typ_prawny']);
+      this.klient_typ = this.klient['typ_prawny'];
+      this.klientForm.get('n_firmy').setValue(this.klient['n_firmy']);
+      this.klientForm.get('pesel').setValue(this.klient['pesel']);
+      this.klientForm.get('nazwisko').setValue(this.klient['nazwisko']);
+      this.klientForm.get('imie').setValue(this.klient['imie']);
+      this.klientForm.get('kod').setValue(this.klient['kod']);
+      this.klientForm.get('miejscowosc').setValue(this.klient['miejscowosc']);
+      this.klientForm.get('ulica').setValue(this.klient['ulica']);
+      this.klientForm.get('kod_k').setValue(this.klient['kod_k']);
+      this.klientForm.get('miejscowosc_k').setValue(this.klient['miejscowosc_k']);
+      this.klientForm.get('ulica_k').setValue(this.klient['ulica_k']);
+      this.klientForm.get('tel').setValue(this.klient['tel']);
+      this.klientForm.get('tel_kom').setValue(this.klient['tel_kon']);
+      this.klientForm.get('email').setValue(this.klient['email']);
+      if (this.klient['data_wyd']) {
+        const data_wyd_s = new Date(this.klient['data_wyd']).toISOString();
+        // console.log(data_wyd_s);
+        const month = parseInt(data_wyd_s.substring(5, 7), 10);
+        const day = parseInt(data_wyd_s.substring(8, 10), 10);
+        const year = parseInt(data_wyd_s.substring(0, 4), 10);
+        this.data_w = {
+          year: year,
+          month: month,
+          day: day
+        }
+      }
+      // console.log(this.klient['data_wyd']);
+      // this.klientForm.get('data_wyd').setValue(this.klient['data_wyd']);
+      this.klientForm.get('Kat').setValue(this.klient['Kat']);
+      this.klientForm.get('nip').setValue(this.klient['nip']);
+      this.klientForm.get('regon').setValue(this.klient['regon']);
+      this.klientForm.get('uwagi').setValue(this.klient['uwagi']);
+    }
   }
 
 }

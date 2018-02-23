@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {KlientDt} from "../models/klientDt";
 import {KlientsService} from "../klients.service";
 import {CookieService} from "ngx-cookie-service";
@@ -10,7 +10,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
   templateUrl: './klients-list.component.html',
   styleUrls: ['./klients-list.component.css']
 })
-export class KlientsListComponent implements OnInit {
+export class KlientsListComponent implements OnInit, OnDestroy {
 
   @ViewChild('content2') content2: TemplateRef<any>;
   private uwaga = '';
@@ -31,6 +31,10 @@ export class KlientsListComponent implements OnInit {
                private _flashMessagesService: FlashMessagesService,
                private modalService: NgbModal
              ) { }
+
+  ngOnDestroy() {
+    this.cookieService.delete('flash_error');
+  }
 
   ngOnInit() {
     if (this.cookieService.check('flash_ok'))
@@ -75,6 +79,8 @@ export class KlientsListComponent implements OnInit {
     if (this.cookieService.check('id'))
     this.id = this.cookieService.get('id');
   }
+
+
 
   open(content2) {
     this.modalService.open(content2);

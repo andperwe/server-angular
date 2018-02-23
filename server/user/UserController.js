@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
+var bcrypt = require('bcryptjs');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
@@ -24,12 +25,115 @@ var VerifyToken = require('../auth/VerifyToken');
 });
 */
 // RETURNS ALL THE USERS IN THE DATABASE
-router.get('/', VerifyToken, function (req, res) {
-    User.find({}, function (err, users) {
-        if (err) return res.status(500).send("There was a problem finding the users.");
-        res.status(200).send(users);
-    });
+router.post('/userdt', VerifyToken, function(req, res) {
+  var sorting = {}
+  var start = 0
+  var page = parseInt(req.body.page);
+  if ( page > 1)
+    start = (page -1) * 5;
+  sorting[req.body.sort[0]] = req.body.sort[1]
+  var filter = ""
+  if (req.body.filter)
+    filter = req.body.filter
+  var q = User.aggregate([
+    {
+      $project: {
+        username:1,
+        lastName: {$ifNull:["$lastName",""]},
+        firstName: {$ifNull:["$lastName",""]},
+        email: {$ifNull:["$email",""]},
+        role:1
+      }
+    },
+    {
+      $match:
+          {username: {'$regex':'^' + filter,'$options':'i'}}
+    },
+    {$sort : sorting},
+    {$skip : start},
+    {$limit : 5}
+  ]);
+
+  var q_count = User.aggregate([
+
+    {
+      $project: {
+        username:1
+      }
+    },
+    {
+      $match:
+          {username: {'$regex':'^' + filter,'$options':'i'}}
+    },
+    {
+      $count : "count"
+    }
+  ]);
+  q_count.exec(function(err, count_f) {
+    var recFilter = 0;
+    if (count_f.length > 0)
+      recFilter = parseInt(count_f[0].count)
+    q.exec(function(err, users) {
+      if (err)
+        res.send(err);
+      var data_send = {"recordsFiltering": recFilter, "data": users}
+      res.json(data_send);
+    })
+  })
 });
+
+router.post('/user_new', VerifyToken, function(req, res) {
+  var un = req.body.username.toLowerCase();
+  User.findOne({ username: un }, function (err, user) {
+    if (err) return res.status(500).send('Błąd serwera.');
+    if (!user) {
+      var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+      User.create({
+          username : un,
+          email : req.body.email,
+          password : hashedPassword,
+          firstName : req.body.firstName,
+          lastName : req.body.lastName,
+          role : req.body.role
+        },
+        function (err, user) {
+          if (err) return res.status(500).send("Wystąpił błąd podczas rejestracji użytkownika.")
+          res.status(200).send({ok:"Ok"});
+        });
+    }
+    else {
+      return res.status(404).send('Taki użytkownik już istnieje.');
+    }
+  });
+})
+
+router.get('/user/:id', VerifyToken, function(req, res, next) {
+  var id = req.params.id;
+  User.findById(id, function (err, user) {
+    if (err) {res.json({}); next();}
+    res.json(user);
+  });
+});
+
+router.put('/user/:id', VerifyToken, function(req, res, next) {
+  var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+  req.body.password = hashedPassword;
+  User.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+    if (err) return next('Wystąpił błąd podczas aktualizowania użytkownika.');
+    res.json(post);
+  });
+});
+
+router.delete('/user/:id', VerifyToken, function(req, res, next) {
+  User.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+    if (err) {
+      return next('Wystąpił błąd podczas usuwania użytkownika.');
+    }
+    res.json(post);
+  });
+});
+
+
 
 // GETS A SINGLE USER FROM THE DATABASE
 /*router.get('/:id', function (req, res) {
